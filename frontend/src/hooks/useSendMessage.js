@@ -10,21 +10,32 @@ const useSendMessage = () => {
   const sendMessage = async (message) => {
     setLoading(true);
     try {
-      const res = await fetch(
-        `${API}/api/messages/send/${selectedConversation._id}`,
+      const res = await API.post(
+        `/api/messages/send/${selectedConversation._id}`,
         {
-          method: "POST",
-          credentials: "include",
+          message,
+        },
+        {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ message }),
         }
       );
-      const data = await res.json();
-      if (data.error) throw new Error(data.error);
+      // const res = await fetch(
+      //   `${API}/api/messages/send/${selectedConversation._id}`,
+      //   {
+      //     method: "POST",
+      //     credentials: "include",
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //     },
+      //     body: JSON.stringify({ message }),
+      //   }
+      // );
+      // const data = await res.json();
+      if (res.data.error) throw new Error(res.data.error);
 
-      setMessages([...messages, data]);
+      setMessages([...messages, res.data]);
     } catch (error) {
       toast.error(error.message);
     } finally {

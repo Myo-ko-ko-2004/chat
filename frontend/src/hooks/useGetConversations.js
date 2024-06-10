@@ -10,14 +10,15 @@ const useGetConversations = () => {
     const getConversations = async () => {
       setLoading(true);
       try {
-        const res = await fetch(`${API}/api/users`, {
-          credentials: "include",
-        });
-        const data = await res.json();
-        if (data.error) {
-          throw new Error(data.error);
+        const res = await API.get("/api/users");
+        // const res = await fetch(`${API}/api/users`, {
+        //   credentials: "include",
+        // });
+        // const data = await res.json();
+        if (res.data.error) {
+          throw new Error(res.data.error);
         }
-        setConversations(data);
+        setConversations(res.data);
       } catch (error) {
         toast.error(error.message);
       } finally {

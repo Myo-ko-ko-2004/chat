@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { useAuthContext } from "./AuthContext";
 import io from "socket.io-client";
-import { API } from "../api/api";
+import { BackendApi } from "../api/api";
 
 const SocketContext = createContext();
 
@@ -15,7 +15,7 @@ export const SocketContextProvider = ({ children }) => {
 
   useEffect(() => {
     if (authUser) {
-      const socket = io(API, {
+      const socket = io(BackendApi, {
         query: {
           userId: authUser._id,
         },

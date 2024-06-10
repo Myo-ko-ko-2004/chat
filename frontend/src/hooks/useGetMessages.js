@@ -11,15 +11,16 @@ const useGetMessages = () => {
     const getMessages = async () => {
       setLoading(true);
       try {
-        const res = await fetch(
-          `${API}/api/messages/${selectedConversation._id}`,
-          {
-            credentials: "include",
-          }
-        );
-        const data = await res.json();
-        if (data.error) throw new Error(data.error);
-        setMessages(data);
+        const res = await API.get(`/api/messages/${selectedConversation._id}`);
+        // const res = await fetch(
+        //   `${API}/api/messages/${selectedConversation._id}`,
+        //   {
+        //     credentials: "include",
+        //   }
+        // );
+        // const data = await res.json();
+        if (res.data.error) throw new Error(res.data.error);
+        setMessages(res.data);
       } catch (error) {
         toast.error(error.message);
       } finally {

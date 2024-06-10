@@ -11,20 +11,28 @@ const useLogin = () => {
     if (!success) return;
     setLoading(true);
     try {
-      const res = await fetch(`${API}/api/auth/login`, {
-        credentials: "include",
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
-      });
+      const res = await API.post(
+        "/api/auth/login",
+        {
+          username,
+          password,
+        },
+        { headers: { "Content-Type": "application/json" } }
+      );
+      // const res = await fetch(`${API}/api/auth/login`, {
+      //   credentials: "include",
+      //   method: "POST",
+      //   headers: { "Content-Type": "application/json" },
+      //   body: JSON.stringify({ username, password }),
+      // });
 
-      const data = await res.json();
-      if (data.error) {
-        throw new Error(data.error);
+      // const data = await res.json();
+      if (res.data.error) {
+        throw new Error(res.data.error);
       }
 
-      localStorage.setItem("chat-user", JSON.stringify(data));
-      setAuthUser(data);
+      localStorage.setItem("chat-user", JSON.stringify(res.data));
+      setAuthUser(res.data);
     } catch (error) {
       toast.error(error.message);
     } finally {
